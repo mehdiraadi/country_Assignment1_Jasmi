@@ -974,15 +974,22 @@ def responseContent=testRunner.testCase.getTestStepByName("GetCountries").getPro
 log.info(responseContent)
 //change the response to a table
 def xmlResponse = new XmlSlurper().parseText(responseContent)
-//
+
 //log.info(xmlResponse)
 
-//to avoid &lt;GetAirportInformationByCountryResult>&lt;![CDATA[&lt;NewDataSet> and all tags
+//to avoid &lt;GetCountriesResult>&lt;![CDATA[&lt;NewDataSet> and all tags
 def slurperResponse=new XmlSlurper().parseText(xmlResponse.Body.GetCountriesResponse.GetCountriesResult.toString())
 log.info(slurperResponse)
 //to get the specific country name(Sweden)
-def countryName=slurperResponse.Table.Name[208]
-//to save the result(abbrevation)in project level
+//def countryName=slurperResponse.Table.Name[208]
+
+ int i=0
+    while(slurperResponse.Table.Name[i]!= "Sweden") {
+       i++;
+    }
+    def countryName = slurperResponse.Table.Name[i]
+  log.info("CountryName :" +" " +  countryName)
+//to save the result(Sweden)in project level
 com.eviware.soapui.SoapUI.globalProperties.setPropertyValue("GetCountries",countryName.toString())</script></con:config></con:testStep><con:testStep type="request" name="GetISOCountryCodeByCountryName_ProjectLevel" id="1fcffbf4-948e-404d-9386-246f48a56a31"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>countrySoap</con:interface><con:operation>GetISOCountryCodeByCountyName</con:operation><con:request name="GetISOCountryCodeByCountryName_ProjectLevel" id="b205c4ad-2323-4a59-8691-66eca5a1266b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://www.webservicex.net/country.asmx</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.webserviceX.NET">
    <soapenv:Header/>
    <soapenv:Body>
